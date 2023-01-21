@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -11,12 +13,8 @@ use App\Models\User;
 class AuthController extends Controller
 {
 
-    public function login(Request $request)
+    public function login(LoginRequest $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
@@ -39,17 +37,13 @@ class AuthController extends Controller
 
     }
 
-    public function register(Request $request){
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $inputs = $request->only('name','email', 'password');
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $inputs['name'],
+            'email' => $inputs['email'],
+            'password' => Hash::make($inputs['password']),
         ]);
 
         $token = Auth::login($user);
@@ -64,7 +58,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(): JsonResponse
     {
         Auth::logout();
         return response()->json([
@@ -73,7 +67,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json([
             'status' => 'success',
@@ -81,7 +75,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function refresh()
+    public function refresh(): JsonResponse
     {
         return response()->json([
             'status' => 'success',
@@ -92,7 +86,6 @@ class AuthController extends Controller
             ]
         ]);
     }
-
 
 
 }
