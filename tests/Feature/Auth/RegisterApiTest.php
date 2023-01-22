@@ -25,7 +25,8 @@ class RegisterApiTest extends TestCase
         $this->faker = Faker::create();
     }
 
-    public function test_validate_name_register_request(){
+    public function test_validate_name_register_request()
+    {
         $this->json('POST', $this->baseUrl . '/register')
             ->assertStatus(422)
             ->assertJson([
@@ -50,6 +51,38 @@ class RegisterApiTest extends TestCase
             ->assertStatus(422)
             ->assertJson([
                 'error' => 'The password field is required.',
+            ]);
+    }
+
+    public function test_user_email_exists_register_request()
+    {
+        $inputs = ['name' => $this->faker->name(), 'email' => $this->email];
+        $this->json('POST', $this->baseUrl . '/register', $inputs)
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The email has already been taken.',
+            ]);
+    }
+
+    public function test_success_register_request()
+    {
+        $inputs = ['name' => $this->faker->name(), 'email' => $this->faker->email(), 'password' => $this->faker->password()];
+        $this->json('POST', $this->baseUrl . '/register', $inputs)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'status',
+                'message',
+                'user' => [
+                    'name',
+                    'email',
+                    'updated_at',
+                    'created_at',
+                    'id',
+                ],
+                'authorization' => [
+                    'token',
+                    'type'
+                ]
             ]);
     }
 

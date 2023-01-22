@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\API\DepartmentController;
+use App\Http\Controllers\API\PositionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,14 @@ Route::middleware(['jwt.verify'])->group(function () {
         Route::post('departments/create', [DepartmentController::class, 'store']);
         Route::put('departments/update/{id}', [DepartmentController::class, 'update']);
         Route::delete('departments/destroy/{id}', [DepartmentController::class, 'destroy']);
+
+
+        // positions
+        Route::get('positions', [PositionController::class, 'index']);
+        Route::get('positions/{id}', [PositionController::class, 'show']);
+        Route::post('positions/create', [PositionController::class, 'store']);
+        Route::put('positions/update/{id}', [PositionController::class, 'update']);
+        Route::delete('positions/destroy/{id}', [PositionController::class, 'destroy']);
 
 
     });

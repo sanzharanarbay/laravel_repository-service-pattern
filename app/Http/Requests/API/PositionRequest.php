@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\API;
 
+
 use App\Http\Requests\JsonErrorRequest;
 
-class DepartmentRequest extends JsonErrorRequest
+class PositionRequest extends JsonErrorRequest
 {
 
     public function authorize(): bool
@@ -13,11 +14,11 @@ class DepartmentRequest extends JsonErrorRequest
     }
 
 
-    public function rules() :array
+    public function rules(): array
     {
         return [
             'label' => 'required|string',
-            'code' => 'required|string',
+            'slug' => 'required|string',
         ];
     }
 }

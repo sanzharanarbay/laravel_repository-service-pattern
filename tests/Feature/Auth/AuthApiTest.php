@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Config;
+use JWTAuth;
 use Tests\TestCase;
+use Faker\Factory as Faker;
 
 class AuthApiTest extends TestCase
 {
@@ -13,6 +16,9 @@ class AuthApiTest extends TestCase
     protected $email;
     protected $password;
     protected $baseUrl;
+    protected $user;
+    protected $token;
+    protected $faker;
 
     public function setUp(): void
     {
@@ -20,8 +26,87 @@ class AuthApiTest extends TestCase
         $this->email = Config::get('api.apiEmail');
         $this->password = Config::get('api.apiPassword');
         $this->baseUrl = Config::get('app.url') . '/api';
+        $this->user = User::where('email', Config::get('api.apiEmail'))->first();
+        $this->token = JWTAuth::fromUser($this->user);
+        $this->faker = Faker::create();
     }
 
+    public function test_auth_api_without_token()
+    {
+        $this->withHeaders([
+            'Accept' => 'application/json'
+        ])->json('GET', $this->baseUrl . '/me')
+            ->assertStatus(401)
+            ->assertJson([
+                'status' => 'Authorization Token not found',
+            ]);
+    }
+
+    public function test_auth_api_with_invalid_token()
+    {
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->faker->word(),
+        ])->json('GET', $this->baseUrl . '/me')
+            ->assertStatus(401)
+            ->assertJson([
+                'status' => 'Token is Invalid',
+            ]);
+    }
+
+    public function test_success_me_api(){
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('GET', $this->baseUrl . '/me')
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'status',
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                    'email_verified_at',
+                    'created_at',
+                    'updated_at'
+                ],
+            ]);
+    }
+
+    public function test_success_refresh_token_api(){
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('POST', $this->baseUrl . '/refresh')
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'status',
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                    'email_verified_at',
+                    'created_at',
+                    'updated_at'
+                ],
+                'authorization' => [
+                    'token',
+                    'type'
+                ]
+            ]);
+    }
+
+    public function test_success_logout_api(){
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('POST', $this->baseUrl . '/logout')
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'status',
+                'message'
+            ]);
+    }
 
 
 }

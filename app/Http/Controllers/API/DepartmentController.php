@@ -19,7 +19,7 @@ class DepartmentController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->departmentRepository->getAllDepartments(),200);
+        return response()->json($this->departmentRepository->getAllDepartments(), 200);
     }
 
     public function show($id): JsonResponse
@@ -33,7 +33,10 @@ class DepartmentController extends Controller
             'label',
             'code'
         ]);
-        return response()->json($this->departmentRepository->createDepartment($inputs), 201);
+        return response()->json([
+            'message' => 'success',
+            'data' => $this->departmentRepository->createDepartment($inputs),
+        ], 201);
     }
 
     public function update(DepartmentRequest $request, $id): JsonResponse
@@ -42,15 +45,20 @@ class DepartmentController extends Controller
             'label',
             'code'
         ]);
-
-        return response()->json($this->departmentRepository->updateDepartment($id, $inputs), 200);
+        $status = $this->departmentRepository->updateDepartment($id, $inputs);
+        return response()->json([
+            'message' => 'success',
+            'status' => $status,
+        ], 200);
     }
 
     public function destroy($id): JsonResponse
     {
-        $this->departmentRepository->deleteDepartment($id);
-
-        return response()->json(['message' => 'Successfully deleted'], 204);
+        $status = $this->departmentRepository->deleteDepartment($id);
+        return response()->json([
+            'message' => 'success',
+            'status' => $status,
+        ], 200);
     }
 
 }
