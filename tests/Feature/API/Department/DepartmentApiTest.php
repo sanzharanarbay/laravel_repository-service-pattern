@@ -67,6 +67,31 @@ class DepartmentApiTest extends TestCase
             ]);
     }
 
+    public function test_validate_label_create_department_api(){
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('POST', $this->baseUrl . '/departments/create')
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The label field is required.',
+            ]);
+    }
+
+    public function test_validate_code_create_department_api(){
+        $inputs = [
+            'label' => $this->faker->company(),
+        ];
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('POST', $this->baseUrl . '/departments/create', $inputs)
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The code field is required.',
+            ]);
+    }
+
     public function test_success_create_department_api(){
         $inputs = [
             'label' => $this->faker->company(),
@@ -86,6 +111,31 @@ class DepartmentApiTest extends TestCase
                     'created_at',
                     'id',
                 ]
+            ]);
+    }
+
+    public function test_validate_label_update_department_api(){
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('PUT', $this->baseUrl . '/departments/update/' . $this->department->id)
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The label field is required.',
+            ]);
+    }
+
+    public function test_validate_code_update_department_api(){
+        $inputs = [
+            'label' => $this->faker->company(),
+        ];
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('PUT', $this->baseUrl . '/departments/update/' . $this->department->id, $inputs)
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The code field is required.',
             ]);
     }
 

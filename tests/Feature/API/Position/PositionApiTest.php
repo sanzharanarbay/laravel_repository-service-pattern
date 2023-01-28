@@ -66,6 +66,31 @@ class PositionApiTest extends TestCase
             ]);
     }
 
+    public function test_validate_label_create_position_api(){
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('POST', $this->baseUrl . '/positions/create')
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The label field is required.',
+            ]);
+    }
+
+    public function test_validate_slug_create_position_api(){
+        $inputs = [
+            'label' => $this->faker->company(),
+        ];
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('POST', $this->baseUrl . '/positions/create', $inputs)
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The slug field is required.',
+            ]);
+    }
+
     public function test_success_create_position_api(){
         $inputs = [
             'label' => $this->faker->company(),
@@ -85,6 +110,31 @@ class PositionApiTest extends TestCase
                     'created_at',
                     'id',
                 ]
+            ]);
+    }
+
+    public function  test_validate_label_update_position_api(){
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('PUT', $this->baseUrl . '/positions/update/' . $this->position->id)
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The label field is required.',
+            ]);
+    }
+
+    public function  test_validate_slug_update_position_api(){
+        $inputs = [
+            'label' => $this->faker->company(),
+        ];
+        $this->withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '. $this->token,
+        ])->json('PUT', $this->baseUrl . '/positions/update/' . $this->position->id, $inputs)
+            ->assertStatus(422)
+            ->assertJson([
+                'error' => 'The slug field is required.',
             ]);
     }
 
