@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\API\DepartmentController;
 use App\Http\Controllers\API\PositionController;
+use App\Http\Controllers\API\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,13 @@ Route::middleware(['jwt.verify'])->group(function () {
         Route::put('positions/update/{id}', [PositionController::class, 'update']);
         Route::delete('positions/destroy/{id}', [PositionController::class, 'destroy']);
 
+
+        // courses
+//        Route::get('courses', [CourseController::class, 'index']);
+//        Route::get('courses/{id}', [CourseController::class, 'show']);
+        Route::post('courses/create', [CourseController::class, 'store']);
+//        Route::put('courses/update/{id}', [CourseController::class, 'update']);
+//        Route::delete('courses/destroy/{id}', [CourseController::class, 'destroy']);
 
     });
 

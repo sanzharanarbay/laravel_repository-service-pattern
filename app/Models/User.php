@@ -52,4 +52,18 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function created_courses(){
+        return $this->hasMany(Course::class, 'created_by', 'id');
+    }
+
 }
