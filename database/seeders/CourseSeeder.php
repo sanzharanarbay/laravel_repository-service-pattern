@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Position;
+use App\Models\Course;
+use Database\Factories\CourseFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PositionSeeder extends Seeder
+class CourseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +16,6 @@ class PositionSeeder extends Seeder
      */
     public function run()
     {
-        Position::factory()->count(20)->create();
+        Course::factory()->count(10)->create();
     }
 }

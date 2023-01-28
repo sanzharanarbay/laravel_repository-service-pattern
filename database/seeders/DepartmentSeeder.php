@@ -15,31 +15,6 @@ class DepartmentSeeder extends Seeder
      */
     public function run()
     {
-        $depatments = [
-            [
-                'label' => 'IT',
-                'code' => 'it'
-            ],
-            [
-                'label' => 'PR',
-                'code' => 'pr'
-            ],
-            [
-                'label' => 'HR',
-                'code' => 'hr'
-            ],
-            [
-                'label' => 'Marketing',
-                'code' => 'marketing'
-            ],
-            [
-                'label' => 'Security',
-                'code' => 'security'
-            ],
-        ];
-
-        foreach ($depatments as $depatment){
-            Department::create($depatment);
-        }
+        Department::factory()->count(15)->create();
     }
 }

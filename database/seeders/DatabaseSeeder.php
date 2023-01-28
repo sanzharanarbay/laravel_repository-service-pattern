@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             PositionSeeder::class,
             DefaultUserSeeder::class,
+            CourseSeeder::class,
+            EmployeeSeeder::class,
         ]);
     }
 }
