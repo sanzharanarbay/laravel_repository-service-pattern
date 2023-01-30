@@ -21,7 +21,13 @@ class CourseRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    public function getCoursesWithCreatedUser($courseId){
+    public function searchCoursesWithQueryParams($inputs){
+        $courses = Course::filter($inputs)->with(['created_user', 'employees'])->paginate();
+        return $courses;
+    }
+
+
+    public function getCourseWithRelations($courseId){
         return $this->getModel()->newQuery()->with(['created_user', 'employees'])
             ->findOrFail($courseId);
     }

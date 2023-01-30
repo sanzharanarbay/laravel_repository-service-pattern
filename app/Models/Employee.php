@@ -16,6 +16,8 @@ class Employee extends Model
 
     protected $guarded=['id'];
 
+    protected $hidden = ['pivot'];
+
     public function position()
     {
         return $this->belongsTo(Position::class, 'position_id', 'id');

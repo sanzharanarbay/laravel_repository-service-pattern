@@ -38,7 +38,8 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function delete($id)
     {
-        return $this->model->destroy($id);
+        $record = $this->find($id);
+        return $record->delete($id);
     }
 
     public function find($id)
@@ -61,4 +62,9 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->with($relations);
     }
+
+    public function updateOrCreate(array $condition, array $data){
+        return $this->model->updateOrCreate($condition, $data);
+    }
+
 }

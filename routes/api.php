@@ -48,11 +48,11 @@ Route::middleware(['jwt.verify'])->group(function () {
 
 
         // courses
-//        Route::get('courses', [CourseController::class, 'index']);
-//        Route::get('courses/{id}', [CourseController::class, 'show']);
+        Route::get('courses', [CourseController::class, 'index']);
+        Route::get('courses/{id}', [CourseController::class, 'show']);
         Route::post('courses/create', [CourseController::class, 'store']);
-//        Route::put('courses/update/{id}', [CourseController::class, 'update']);
-//        Route::delete('courses/destroy/{id}', [CourseController::class, 'destroy']);
+        Route::put('courses/update/{id}', [CourseController::class, 'update']);
+        Route::delete('courses/destroy/{id}', [CourseController::class, 'destroy']);
 
     });
 
