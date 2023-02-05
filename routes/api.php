@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\API\DepartmentController;
 use App\Http\Controllers\API\PositionController;
 use App\Http\Controllers\API\CourseController;
+use App\Http\Controllers\API\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,14 @@ Route::middleware(['jwt.verify'])->group(function () {
         Route::post('courses/create', [CourseController::class, 'store']);
         Route::put('courses/update/{id}', [CourseController::class, 'update']);
         Route::delete('courses/destroy/{id}', [CourseController::class, 'destroy']);
+
+        //employees
+        // courses
+        Route::get('employees', [EmployeeController::class, 'index']);
+        Route::get('employees/{id}', [EmployeeController::class, 'show']);
+        Route::post('employees/create', [EmployeeController::class, 'store']);
+        Route::put('employees/update/{id}', [EmployeeController::class, 'update']);
+        Route::delete('employees/destroy/{id}', [EmployeeController::class, 'destroy']);
 
     });
 

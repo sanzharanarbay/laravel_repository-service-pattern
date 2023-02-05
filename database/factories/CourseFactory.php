@@ -19,7 +19,7 @@ class CourseFactory extends Factory
         return [
             'title' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
-            'credits' => $this->faker->randomDigitNotNull(),
+            'credits' => $this->faker->numberBetween(1, 6),
             'start_date' => $this->faker->dateTimeBetween('now', '+1 week'),
             'end_date' => $this->faker->dateTimeBetween('+2 week', '+3 months'),
             'created_by' => User::first()->id,

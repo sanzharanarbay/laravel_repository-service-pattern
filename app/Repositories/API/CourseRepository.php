@@ -11,7 +11,6 @@ namespace App\Repositories\API;
 
 use App\Models\Course;
 use App\Repositories\BaseRepository;
-use Illuminate\Database\Eloquent\Model;
 
 class CourseRepository extends BaseRepository
 {

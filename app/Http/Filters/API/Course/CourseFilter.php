@@ -22,4 +22,35 @@ class CourseFilter extends BaseFilter
     {
         return $this->builder->where('description', 'like', "%{$value}%");
     }
+
+    public function credits_gte($value)
+    {
+        return $this->builder->where('credits', '>=', $value);
+    }
+
+    public function credits_lte($value)
+    {
+        return $this->builder->where('credits', '<=', $value);
+    }
+
+    public function start_date($value)
+    {
+        return $this->builder->where('start_date', '>=', $value);
+    }
+
+    public function end_date($value)
+    {
+        return $this->builder->where('end_date', '<=', $value);
+    }
+
+    public function is_active($value)
+    {
+        return $this->builder->where('is_active', '=', $value);
+    }
+
+    public function created_by($value)
+    {
+        return $this->builder->where('created_by', '=', $value);
+    }
+
 }
