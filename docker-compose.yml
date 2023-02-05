@@ -1,0 +1,83 @@
+version: "3.7"
+services:
+    server:
+        build:
+            context: ./
+            dockerfile: docker/php-fpm/Dockerfile
+        container_name: server
+        restart: on-failure
+        depends_on:
+        - postgres
+        volumes:
+        - ./:/var/www/html
+        networks:
+        - app-network
+
+    nginx:
+        image: nginx:1.23-alpine
+        container_name: nginx
+        restart: on-failure
+        ports:
+        - "8000:80"
+        depends_on:
+        - server
+        volumes:
+        - ./:/var/www/html
+        - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        - ./data/nginx/log/:/var/log/nginx/
+        networks:
+        - app-network
+
+    postgres:
+        image: postgres:14.6
+        container_name: postgres
+        restart: always
+        tty: true
+        ports:
+        - "5432:5432"
+        environment:
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+        - ./data/postgre:/var/lib/postgresql/data
+        - ./docker/postgresql/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+        - ./docker/postgresql/init_db_testing.sql:/docker-entrypoint-initdb.d/init_db_testing.sql
+        networks:
+        - app-network
+
+    pgadmin:
+        container_name: pgadmin4_container
+        image: dpage/pgadmin4:6
+        restart: always
+        depends_on:
+          - postgres
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@admin.com
+            PGADMIN_DEFAULT_PASSWORD: root
+        ports:
+        - "5050:80"
+        networks:
+        - app-network
+
+    portainer:
+        image: portainer/portainer-ce:2.16.0
+        container_name: portainer
+        restart: unless-stopped
+        security_opt:
+        - no-new-privileges:true
+        volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - portainer-data:/data
+        ports:
+        - 9000:9000
+        networks:
+        - app-network
+
+volumes:
+    portainer-data:
+        driver: local
+
+networks:
+    app-network:
+        driver: bridge
