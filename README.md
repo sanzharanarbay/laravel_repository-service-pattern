@@ -20,7 +20,7 @@ cp .env.example .env . (in Windows copy)
 composer install
 php artisan:key generate
 php artisan migrate
-php artisan migrate:fresh
+php artisan migrate:fresh (for recreating tables)
 php artisan db:seed
 php artisan optimize:clear
 php artisan serve
@@ -42,11 +42,21 @@ ____
 - composer install
 - php artisan key:generate
 - php artisan migrate (if database is empty)
-- php artisan migrate:fresh
+- php artisan migrate:fresh (for recreating tables)
 - php artisan db:seed (if database is empty)
 - php artisan optimize:clear
 - exit  (exit from container)
 ____
+
+
+## Testing
+- docker-compose exec server bash
+- php artisan --env=testing migrate
+- php artisan --env=testing db:seed
+- php artisan --env=testing migrate:fresh (recreating tables)
+- php artisan test
+____
+
 
 ## GUI
 - visit http://localhost:8000/ - Application
