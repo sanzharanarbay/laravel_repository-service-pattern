@@ -50,13 +50,50 @@ class EmployeeService
         ], 200);
     }
 
-    public function deleteEmployee($id) : JsonResponse
+    public function deleteEmployee($id): JsonResponse
     {
         $status = $this->employeeRepository->delete($id);
         return response()->json([
             'status' => $status,
             'message' => 'The employee deleted successfully'
         ], 200);
+    }
+
+    public function attachEmployeeCourses($id, $inputs): JsonResponse
+    {
+        try {
+            $employee = $this->employeeRepository->find($id);
+            $inputs = array_map(function ($value) {
+                return intval($value);
+            }, $inputs);
+            $employee->courses()->sync($inputs);
+            return response()->json([
+                'status' => true,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
+    }
+
+    public function detachEmployeeCourses($id): JsonResponse
+    {
+        try {
+            $employee = $this->employeeRepository->find($id);
+            $employee->courses()->detach();
+            return response()->json([
+                'status' => true,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
     }
 
 }

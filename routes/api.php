@@ -63,6 +63,9 @@ Route::middleware(['jwt.verify'])->group(function () {
         Route::put('employees/update/{id}', [EmployeeController::class, 'update']);
         Route::delete('employees/destroy/{id}', [EmployeeController::class, 'destroy']);
 
+        //employee && courses
+        Route::put('employees/{id}/courses/attach', [EmployeeController::class, 'attach']);
+        Route::delete('employees/{id}/courses/detach', [EmployeeController::class, 'detach']);
     });
 
 });

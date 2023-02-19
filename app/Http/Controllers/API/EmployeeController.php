@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\EmployeeRequest;
+use App\Http\Requests\API\UpdateEmployeeCoursesRequest;
 use App\Services\API\EmployeeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -44,6 +45,17 @@ class EmployeeController extends Controller
 
     public function destroy($id){
         return $this->employeeService->deleteEmployee($id);
+    }
+
+    public function attach($id, UpdateEmployeeCoursesRequest $request): JsonResponse
+    {
+        $inputs = $request->only('course_ids');
+        return $this->employeeService->attachEmployeeCourses($id, $inputs['course_ids']);
+    }
+
+    public function detach($id): JsonResponse
+    {
+        return $this->employeeService->detachEmployeeCourses($id);
     }
 
 
