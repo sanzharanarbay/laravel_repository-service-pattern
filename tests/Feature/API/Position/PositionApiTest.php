@@ -41,13 +41,27 @@ class PositionApiTest extends TestCase
         ])->json('GET', $this->baseUrl . '/positions')
             ->assertStatus(200)
             ->assertJsonStructure([
-                '*' => [
-                    'id',
-                    'label',
-                    'slug',
-                    'created_at',
-                    'updated_at'
+                'current_page',
+                'data' => [
+                    '*' => [
+                        'id',
+                        'label',
+                        'slug',
+                        'created_at',
+                        'updated_at'
+                    ]
                 ],
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total'
             ]);
     }
 
