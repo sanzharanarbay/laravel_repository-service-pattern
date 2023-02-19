@@ -11,7 +11,7 @@ namespace App\Interfaces;
 
 interface DepartmentRepositoryInterface
 {
-    public function getAllDepartments();
+    public function getAllDepartments(array $inputs);
     public function getDepartmentById($departmentID);
     public function deleteDepartment($departmentID);
     public function createDepartment(array $details);

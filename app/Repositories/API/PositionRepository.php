@@ -14,8 +14,8 @@ use App\Models\Position;
 
 class PositionRepository implements PositionRepositoryInterface
 {
-    public function getAllPositions(){
-        return Position::all();
+    public function getAllPositions($inputs){
+        return Position::filter($inputs)->paginate();
     }
     public function getPositionById($position_id){
         return Position::findOrFail($position_id);

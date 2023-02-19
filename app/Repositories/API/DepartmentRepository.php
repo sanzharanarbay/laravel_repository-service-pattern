@@ -14,8 +14,8 @@ use App\Models\Department;
 
 class DepartmentRepository implements DepartmentRepositoryInterface
 {
-    public function getAllDepartments(){
-        return Department::all();
+    public function getAllDepartments($inputs){
+        return Department::filter($inputs)->paginate();
     }
     public function getDepartmentById($departmentID){
         return Department::findOrFail($departmentID);

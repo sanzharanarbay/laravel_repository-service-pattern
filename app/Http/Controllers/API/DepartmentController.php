@@ -17,9 +17,10 @@ class DepartmentController extends Controller
         $this->departmentRepository = $departmentRepository;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json($this->departmentRepository->getAllDepartments(), 200);
+        $query_params = $request->all();
+        return response()->json($this->departmentRepository->getAllDepartments($query_params), 200);
     }
 
     public function show($id): JsonResponse

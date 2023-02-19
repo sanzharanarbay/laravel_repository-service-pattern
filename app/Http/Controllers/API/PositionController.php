@@ -17,9 +17,10 @@ class PositionController extends Controller
         $this->positionRepository = $positionRepository;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json($this->positionRepository->getAllPositions(),200);
+        $query_params = $request->all();
+        return response()->json($this->positionRepository->getAllPositions($query_params),200);
     }
 
     public function show($id): JsonResponse
