@@ -62,6 +62,7 @@ ____
 - visit http://localhost:8000/ - Application
 - visit http://localhost:5050/ - PgAdmin
 - visit http://localhost:9000/ - Portainer if installed on your local docker(GUI for docker containers)
+- visit http://localhost:8000/api/documentation - Swagger api documentation
 ____
 
 
